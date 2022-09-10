@@ -1,0 +1,63 @@
+* {
+  box-sizing: border-box;
+  margin: 0;
+}
+
+body {
+  background-color: indigo;
+  color: #fff;
+  font-family: Verdana, Geneva, Tahoma, sans-serif;
+  margin: 0;
+  padding: 0;
+}
+
+/* BUTTONS */
+.btns {
+  display: flex;
+  width: calc(100% - 40px);
+  margin: 30px 20px;
+  flex-direction: column;
+}
+ .btns__center {
+  margin: 0 auto;
+ }
+
+button {
+  width: 80px;
+  padding: 10px 10px;
+  background-color: #fdef05;
+  border-radius: 15px;
+  border-color: #ff6600;
+  font-family: inherit;
+}
+
+#up {
+  margin: 0 auto;
+  margin-bottom: 15px;
+}
+#left {
+  margin-right: 10px;
+}
+
+#right {
+  margin-left: 10px;
+}
+
+#down {
+  margin: 0 auto;
+  margin-top: 15px;
+}
+
+/* MESSAGES */
+.messages {
+  display: flex;
+  width: 75%;
+  margin: 0 auto;
+  max-width: 460px;
+}
+
+p {
+  display: block;
+  margin: 0;
+  width: 100%;
+}
