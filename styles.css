@@ -13,15 +13,14 @@ body {
 
 .game-container {
   display: flex;
-  align-items: center;
   justify-content: center;
   flex-wrap: wrap;
   width: 95vw;
-  height: 100vh;
   margin: 0 auto;
 }
 
 canvas {
+  margin: 20px 0;
   border: 4px solid #ff6600;
   border-radius: 8px;
   background-color: #feff9d;
