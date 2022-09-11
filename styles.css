@@ -11,16 +11,33 @@ body {
   padding: 0;
 }
 
+.game-container {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-wrap: wrap;
+  width: 95vw;
+  height: 100vh;
+  margin: 0 auto;
+}
+
+canvas {
+  border: 4px solid #ff6600;
+  border-radius: 8px;
+  background-color: #feff9d;
+}
+
 /* BUTTONS */
 .btns {
   display: flex;
-  width: calc(100% - 40px);
-  margin: 30px 20px;
+  width: 100%;
+  margin: 30px 0;
   flex-direction: column;
 }
- .btns__center {
+
+.btns__center {
   margin: 0 auto;
- }
+}
 
 button {
   width: 80px;
@@ -35,6 +52,7 @@ button {
   margin: 0 auto;
   margin-bottom: 15px;
 }
+
 #left {
   margin-right: 10px;
 }
