@@ -29,12 +29,17 @@ function setCanvasSize() {
 
 function startGame() {
   game.font = `${elementSize}px Verdana`;
-  // game.textAlign = 'end';
+  game.textAlign = 'end';
 
-  // Horizontal
-  for (let i = 1; i <= 10; i++) {
-    for (let j = 0; j < 10; j++) {
-      game.fillText(emojis['X'], (elementSize * j) - 7, (elementSize * i) - 6);
+  // creacrión de la matriz de 10x10
+  const map = maps[0];
+  const mapRows = map.trim().split('\n');
+  const mapElements = mapRows.map(row => row.trim().split(''));
+
+  // dibujar la matriz
+  for (let y = 1; y <= 10; y++) {
+    for (let x = 1; x <= 10; x++) {
+      game.fillText(emojis[mapElements[y - 1][x - 1]], (elementSize * x) + 7, (elementSize * y) - 7);
     }
   }
 
