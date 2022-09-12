@@ -22,26 +22,38 @@ function setCanvasSize() {
   canvas.setAttribute('width', canvasSize);
   canvas.setAttribute('height', canvasSize);
 
-  elementSize = canvasSize / 10;
+  elementSize = (canvasSize / 10) * 0.97;
 
   startGame();
 }
 
 function startGame() {
   game.font = `${elementSize}px Verdana`;
-  game.textAlign = 'end';
+  // game.textAlign = 'end';
 
   // creacrión de la matriz de 10x10
   const map = maps[0];
   const mapRows = map.trim().split('\n');
-  const mapElements = mapRows.map(row => row.trim().split(''));
+  const mapElements = mapRows.map((row) => row.trim().split('')); // Array multidimensional
 
-  // dibujar la matriz
-  for (let y = 1; y <= 10; y++) {
-    for (let x = 1; x <= 10; x++) {
-      game.fillText(emojis[mapElements[y - 1][x - 1]], (elementSize * x) + 7, (elementSize * y) - 7);
-    }
-  }
+  // // dibujar la matriz
+  // for (let y = 1; y <= 10; y++) {
+  //   for (let x = 1; x <= 10; x++) {
+  //     game.fillText(emojis[mapElements[y - 1][x - 1]], (elementSize * x) + 7, (elementSize * y) - 7);
+  //   }
+  // }
+
+  mapElements.forEach((row, rowIndex) => {
+    row.forEach((colum, columIndex) => {
+      const emoji = emojis[colum];
+      const x = (elementSize * columIndex) - 1.5;
+      const y = elementSize * (rowIndex + 1);
+
+      game.fillText(emoji, x, y);
+
+      console.log({ emoji, row, rowIndex, colum, columIndex, x, y });
+    });
+  });
 
   console.log({ canvasSize, elementSize });
 
