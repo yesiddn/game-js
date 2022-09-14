@@ -10,6 +10,8 @@ const game = canvas.getContext('2d');
 let canvasSize;
 let elementSize;
 
+const playerPosition = { x: undefined, y: undefined };
+
 // METODOS:
 // game.fillReact(x, y, x, y) donde iniciará nuestro trazo o lo que se desee y donde terminará
 // game.fillText
@@ -30,6 +32,7 @@ function setCanvasSize() {
   elementSize = (canvasSize / 10) * 0.97;
 
   startGame();
+
 }
 
 function startGame() {
@@ -51,14 +54,21 @@ function startGame() {
   mapElements.forEach((row, rowIndex) => {
     row.forEach((colum, columIndex) => {
       const emoji = emojis[colum];
-      const x = elementSize * columIndex - 1.5;
-      const y = elementSize * (rowIndex + 1);
+      const posX = elementSize * columIndex - 1.5;
+      const posY = elementSize * (rowIndex + 1);
 
-      game.fillText(emoji, x, y);
+      game.fillText(emoji, posX, posY);
 
-      console.log({ emoji, row, rowIndex, colum, columIndex, x, y });
+      if (playerPosition.x == undefined && colum == 'O') {
+        playerPosition.x = posX;
+        playerPosition.y = posY;
+
+        console.log({ playerPosition });
+      }
     });
   });
+
+  movePlayer();
 
   console.log({ canvasSize, elementSize });
 
@@ -69,6 +79,11 @@ function startGame() {
   // game.fillStyle = 'purple';
   // game.textAlign = 'center';
   // game.fillText('Hola', 100, 100); // escribe un texto en el canvas
+}
+
+function movePlayer() {
+  game.fillText(emojis['PLAYER'], playerPosition.x, playerPosition.y);
+  console.log({ playerPosition });
 }
 
 btnArrowUp.addEventListener('click', moveUp);
@@ -88,6 +103,10 @@ function moveByKey(event) {
 
 function moveUp() {
   console.log('up');
+  playerPosition.y -= elementSize;
+
+  setCanvasSize();
+  movePlayer();
 }
 
 function moveLeft() {
