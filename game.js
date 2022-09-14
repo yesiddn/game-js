@@ -33,6 +33,7 @@ function setCanvasSize() {
 
   startGame();
 
+  // TODO: crear una variable que guarde los movimientos del jugador
 }
 
 function startGame() {
@@ -50,6 +51,8 @@ function startGame() {
   //     game.fillText(emojis[mapElements[y - 1][x - 1]], (elementSize * x) + 7, (elementSize * y) - 7);
   //   }
   // }
+
+  game.clearRect(0, 0, canvasSize, canvasSize);
 
   mapElements.forEach((row, rowIndex) => {
     row.forEach((colum, columIndex) => {
@@ -105,18 +108,26 @@ function moveUp() {
   console.log('up');
   playerPosition.y -= elementSize;
 
-  setCanvasSize();
-  movePlayer();
+  startGame();
 }
 
 function moveLeft() {
   console.log('left');
+  playerPosition.x -= elementSize;
+
+  startGame();
 }
 
 function moveRight() {
   console.log('right');
+  playerPosition.x += elementSize;
+
+  startGame();
 }
 
 function moveDown() {
   console.log('down');
+  playerPosition.y += elementSize;
+
+  startGame();
 }
