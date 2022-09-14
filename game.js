@@ -1,4 +1,9 @@
 const canvas = document.querySelector('#game');
+const btnArrowUp = document.querySelector('#up');
+const btnArrowDown = document.querySelector('#down');
+const btnArrowLeft = document.querySelector('#left');
+const btnArrowRight = document.querySelector('#right');
+
 // const ctx = canvas.getContext('2d');
 const game = canvas.getContext('2d');
 
@@ -46,7 +51,7 @@ function startGame() {
   mapElements.forEach((row, rowIndex) => {
     row.forEach((colum, columIndex) => {
       const emoji = emojis[colum];
-      const x = (elementSize * columIndex) - 1.5;
+      const x = elementSize * columIndex - 1.5;
       const y = elementSize * (rowIndex + 1);
 
       game.fillText(emoji, x, y);
@@ -64,4 +69,35 @@ function startGame() {
   // game.fillStyle = 'purple';
   // game.textAlign = 'center';
   // game.fillText('Hola', 100, 100); // escribe un texto en el canvas
+}
+
+btnArrowUp.addEventListener('click', moveUp);
+btnArrowLeft.addEventListener('click', moveLeft);
+btnArrowRight.addEventListener('click', moveRight);
+btnArrowDown.addEventListener('click', moveDown);
+
+// document.addEventListener('keydown', keyPress); // Escucha el teclado solo cuando esta en el documento html
+window.addEventListener('keyup', moveByKey); // Escucha el teclado para todo el navegador
+
+function moveByKey(event) {
+  if (event.key == 'ArrowUp') moveUp();
+  else if (event.key == 'ArrowLeft') moveLeft();
+  else if (event.key == 'ArrowRight') moveRight();
+  else if (event.key == 'ArrowDown') moveDown();
+}
+
+function moveUp() {
+  console.log('up');
+}
+
+function moveLeft() {
+  console.log('left');
+}
+
+function moveRight() {
+  console.log('right');
+}
+
+function moveDown() {
+  console.log('down');
 }
