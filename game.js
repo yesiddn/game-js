@@ -106,28 +106,45 @@ function moveByKey(event) {
 
 function moveUp() {
   console.log('up');
-  playerPosition.y -= elementSize;
 
-  startGame();
+  if ((playerPosition.y - elementSize) < elementSize) {
+    console.log('OUT');
+  } else {
+    playerPosition.y -= elementSize;
+    startGame();
+  }
 }
 
 function moveLeft() {
   console.log('left');
-  playerPosition.x -= elementSize;
 
-  startGame();
+  if ((playerPosition.x - elementSize) < (-1.5)) {
+    console.log('OUT');
+  } else {
+    playerPosition.x -= elementSize;
+    startGame();
+  }
 }
 
 function moveRight() {
   console.log('right');
-  playerPosition.x += elementSize;
 
-  startGame();
+  if ((playerPosition.x + elementSize) > (elementSize * 9)) {
+    console.log('OUT');
+  } else {
+    playerPosition.x += elementSize;
+    startGame();
+  }
 }
 
 function moveDown() {
   console.log('down');
-  playerPosition.y += elementSize;
-
-  startGame();
+  
+  
+  if ((playerPosition.y + elementSize) > (elementSize * 10)) {
+    console.log('OUT');
+  } else {
+    playerPosition.y += elementSize;
+    startGame();
+  }
 }
