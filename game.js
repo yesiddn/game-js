@@ -11,6 +11,7 @@ let canvasSize;
 let elementSize;
 
 const playerPosition = { x: undefined, y: undefined };
+const giftPosition = { x: undefined, y: undefined };
 let horizontalMovement;
 let verticalMovement;
 
@@ -76,6 +77,10 @@ function startGame() {
 
         console.log({ playerPosition });
       }
+      if (colum == 'I') {
+        giftPosition.x = posX;
+        giftPosition.y = posY;
+      }
     });
   });
 
@@ -93,6 +98,14 @@ function startGame() {
 }
 
 function movePlayer() {
+  const giftCollisionX = playerPosition.x.toFixed(2) == giftPosition.x.toFixed(2);
+  const giftCollisionY = playerPosition.y.toFixed(2) == giftPosition.y.toFixed(2);
+  const giftCollision = giftCollisionX && giftCollisionY;
+
+  if (giftCollision) {
+    console.log('Ganaste');
+  }
+
   game.fillText(emojis['PLAYER'], playerPosition.x, playerPosition.y);
   console.log({ playerPosition });
 }
@@ -127,7 +140,7 @@ function moveUp() {
 function moveLeft() {
   console.log('left');
 
-  if ((playerPosition.x - elementSize) < (-1.5)) {
+  if ((playerPosition.x - elementSize) < 0) {
     console.log('OUT');
   } else {
     playerPosition.x -= elementSize;
