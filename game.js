@@ -11,6 +11,8 @@ let canvasSize;
 let elementSize;
 
 const playerPosition = { x: undefined, y: undefined };
+let horizontalMovement;
+let verticalMovement;
 
 // METODOS:
 // game.fillReact(x, y, x, y) donde iniciará nuestro trazo o lo que se desee y donde terminará
@@ -31,9 +33,12 @@ function setCanvasSize() {
 
   elementSize = (canvasSize / 10) * 0.97;
 
-  startGame();
+  if (playerPosition.x != undefined) {
+    playerPosition.x = horizontalMovement * elementSize;
+    playerPosition.y = verticalMovement * elementSize;
+  }
 
-  // TODO: crear una variable que guarde los movimientos del jugador
+  startGame();
 }
 
 function startGame() {
@@ -57,7 +62,7 @@ function startGame() {
   mapElements.forEach((row, rowIndex) => {
     row.forEach((colum, columIndex) => {
       const emoji = emojis[colum];
-      const posX = elementSize * columIndex - 1.5;
+      const posX = elementSize * columIndex;
       const posY = elementSize * (rowIndex + 1);
 
       game.fillText(emoji, posX, posY);
@@ -65,6 +70,9 @@ function startGame() {
       if (playerPosition.x == undefined && colum == 'O') {
         playerPosition.x = posX;
         playerPosition.y = posY;
+
+        horizontalMovement = columIndex;
+        verticalMovement = rowIndex + 1;
 
         console.log({ playerPosition });
       }
@@ -111,6 +119,7 @@ function moveUp() {
     console.log('OUT');
   } else {
     playerPosition.y -= elementSize;
+    verticalMovement--;
     startGame();
   }
 }
@@ -122,6 +131,7 @@ function moveLeft() {
     console.log('OUT');
   } else {
     playerPosition.x -= elementSize;
+    horizontalMovement--;
     startGame();
   }
 }
@@ -133,6 +143,7 @@ function moveRight() {
     console.log('OUT');
   } else {
     playerPosition.x += elementSize;
+    horizontalMovement++;
     startGame();
   }
 }
@@ -145,6 +156,7 @@ function moveDown() {
     console.log('OUT');
   } else {
     playerPosition.y += elementSize;
+    verticalMovement++;
     startGame();
   }
 }
