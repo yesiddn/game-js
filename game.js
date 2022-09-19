@@ -3,6 +3,7 @@ const btnArrowUp = document.querySelector('#up');
 const btnArrowDown = document.querySelector('#down');
 const btnArrowLeft = document.querySelector('#left');
 const btnArrowRight = document.querySelector('#right');
+const spanLives = document.querySelector('#lives');
 
 // const ctx = canvas.getContext('2d');
 const game = canvas.getContext('2d');
@@ -90,6 +91,7 @@ function startGame() {
     });
   });
 
+  showLives();
   movePlayer();
 
   console.log({ canvasSize, elementSize });
@@ -159,6 +161,21 @@ function levelFail() {
 
 function gameWin() {
   console.log('You Win!');
+}
+
+function showLives() {
+  // Array(lives) // [x, x, x]
+  const heartsArray = Array(lives).fill(emojis['HEART']);
+
+  // forma 1
+  // spanLives.innerText = heartsArray.join('');
+
+  // forma 2
+  // spanLives.innerText = '';
+  // heartsArray.forEach(heart => spanLives.append(heart));
+
+  // forma 3
+  spanLives.innerText = emojis['HEART'].repeat(lives);
 }
 
 function moveByKey(event) {
