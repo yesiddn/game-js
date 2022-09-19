@@ -10,6 +10,7 @@ const game = canvas.getContext('2d');
 let canvasSize;
 let elementSize;
 let level = 0;
+let lives = 3;
 
 const playerPosition = { x: undefined, y: undefined };
 const giftPosition = { x: undefined, y: undefined };
@@ -50,6 +51,7 @@ function startGame() {
 
   // creacrión de la matriz de 10x10
   const map = maps[level];
+
   const mapRows = map.trim().split('\n');
   const mapElements = mapRows.map((row) => row.trim().split('')); // Array multidimensional
 
@@ -120,7 +122,7 @@ function giftCollision() {
   const collision = collisionX && collisionY;
 
   if (collision) {
-    level++;
+    levelWin();
   }
 }
 
@@ -132,6 +134,31 @@ function enemiesCollision() {
   });
 
   return collision;
+}
+
+function levelWin() {
+  if (level < maps.length - 1) {
+    level++;
+  } else {
+    gameWin();
+  }
+}
+
+function levelFail() {
+  lives--;
+  console.log('You Lose!');
+  console.log({ lives });
+  playerPosition.x = undefined;
+  playerPosition.y = undefined;
+
+  if (lives == 0) {
+    level = 0;
+    lives = 3;
+  }
+}
+
+function gameWin() {
+  console.log('You Win!');
 }
 
 function moveByKey(event) {
@@ -151,7 +178,7 @@ function moveUp() {
     verticalMovement--;
 
     if (enemiesCollision()) {
-      console.log('Chocaste con un enemigo');
+      levelFail();
     } else {
       giftCollision();
     }
@@ -169,7 +196,7 @@ function moveLeft() {
     horizontalMovement--;
 
     if (enemiesCollision()) {
-      console.log('Chocaste con un enemigo');
+      levelFail();
     } else {
       giftCollision();
     }
@@ -187,7 +214,7 @@ function moveRight() {
     horizontalMovement++;
 
     if (enemiesCollision()) {
-      console.log('Chocaste con un enemigo');
+      levelFail();
     } else {
       giftCollision();
     }
@@ -205,7 +232,7 @@ function moveDown() {
     verticalMovement++;
 
     if (enemiesCollision()) {
-      console.log('Chocaste con un enemigo');
+      levelFail();
     } else {
       giftCollision();
     }
