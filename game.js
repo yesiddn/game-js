@@ -33,17 +33,23 @@ let verticalMovement;
 window.addEventListener('load', setCanvasSize);
 window.addEventListener('resize', setCanvasSize);
 
+function fixNumer(number, decimals = 0) {
+  return Number(number.toFixed(decimals));
+}
+
 function setCanvasSize() {
   if (window.innerHeight > window.innerWidth) {
-    canvasSize = window.innerWidth * 0.8;
+    canvasSize = window.innerWidth * 0.7;
   } else {
-    canvasSize = window.innerHeight * 0.8;
+    canvasSize = window.innerHeight * 0.7;
   }
+  canvasSize = fixNumer(canvasSize);
 
   canvas.setAttribute('width', canvasSize);
   canvas.setAttribute('height', canvasSize);
 
   elementSize = (canvasSize / 10) * 0.97;
+  elementSize = fixNumer(elementSize);
 
   if (playerPosition.x != undefined) {
     playerPosition.x = horizontalMovement * elementSize;
@@ -132,8 +138,8 @@ btnArrowDown.addEventListener('click', moveDown);
 window.addEventListener('keyup', moveByKey); // Escucha el teclado para todo el navegador
 
 function giftCollision() {
-  const collisionX = playerPosition.x.toFixed(2) == giftPosition.x.toFixed(2);
-  const collisionY = playerPosition.y.toFixed(2) == giftPosition.y.toFixed(2);
+  const collisionX = playerPosition.x == giftPosition.x;
+  const collisionY = playerPosition.y == giftPosition.y;
   const collision = collisionX && collisionY;
 
   if (collision) {
@@ -143,8 +149,8 @@ function giftCollision() {
 
 function enemiesCollision() {
   const collision = enemiesPosition.find((enemy) => {
-    const collisionX = playerPosition.x.toFixed(2) == enemy.x.toFixed(2);
-    const collisionY = playerPosition.y.toFixed(2) == enemy.y.toFixed(2);
+    const collisionX = playerPosition.x == enemy.x;
+    const collisionY = playerPosition.y == enemy.y;
     return collisionX && collisionY;
   });
 
@@ -188,7 +194,7 @@ function setScore() {
 
   if (recordTime == undefined || timePlayer < recordTime) {
     localStorage.setItem('recordTime', timePlayer);
-    pResult.innerText = `New Record: ${timePlayer} ms ✨`;
+    pResult.innerText = `New Record: ${timePlayer} s ✨`;
   } else {
     pResult.innerText = `No superaste el record 😢`;
   }
@@ -210,11 +216,17 @@ function showLives() {
 }
 
 function showTime() {
-  spanTime.innerText = Date.now() - timeStart + 'ms';
+  const time = (Date.now() - timeStart) / 1000;
+  spanTime.innerText = fixNumer(time, 1) + 's';
 }
 
 function showScore() {
-  spanScore.innerText = localStorage.getItem('recordTime') + 'ms';
+  if (!localStorage.getItem('recordTime')) {
+    spanScore.innerText = 'No hay record';
+  } else {
+    const time = localStorage.getItem('recordTime') / 1000;
+    spanScore.innerText = fixNumer(time, 1) + 's';
+  }
 }
 
 function moveByKey(event) {
@@ -227,7 +239,7 @@ function moveByKey(event) {
 function moveUp() {
   console.log('up');
 
-  if ((playerPosition.y - elementSize).toFixed(2) < elementSize) {
+  if (playerPosition.y - elementSize < elementSize) {
     console.log('OUT');
   } else {
     playerPosition.y -= elementSize;
@@ -245,7 +257,7 @@ function moveUp() {
 function moveLeft() {
   console.log('left');
 
-  if ((playerPosition.x - elementSize).toFixed(2) < 0) {
+  if (playerPosition.x - elementSize < 0) {
     console.log('OUT');
   } else {
     playerPosition.x -= elementSize;
@@ -281,7 +293,7 @@ function moveRight() {
 function moveDown() {
   console.log('down');
 
-  if ((playerPosition.y + elementSize).toFixed(2) > elementSize * 10) {
+  if (playerPosition.y + elementSize > elementSize * 10) {
     console.log('OUT');
   } else {
     playerPosition.y += elementSize;
