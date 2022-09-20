@@ -5,6 +5,8 @@ const btnArrowLeft = document.querySelector('#left');
 const btnArrowRight = document.querySelector('#right');
 const spanLives = document.querySelector('#lives');
 const spanTime = document.querySelector('#time');
+const spanScore = document.querySelector('#score');
+const pResult = document.querySelector('#result');
 
 // const ctx = canvas.getContext('2d');
 const game = canvas.getContext('2d');
@@ -64,6 +66,7 @@ function startGame() {
   if (!timeStart) {
     timeStart = Date.now();
     timeInterval = setInterval(showTime, 100);
+    showScore();
   }
 
   // // dibujar la matriz
@@ -173,6 +176,17 @@ function levelFail() {
 function gameWin() {
   console.log('You Win!');
   clearInterval(timeInterval);
+  timePlayer = Date.now() - timeStart;
+
+  const recordTime = localStorage.getItem('recordTime');
+  console.log({ recordTime, timePlayer });
+
+  if (recordTime == undefined || timePlayer < recordTime) {
+    localStorage.setItem('recordTime', timePlayer);
+    pResult.innerText = `New Record: ${timePlayer} ms ✨`;
+  } else {
+    pResult.innerText = `No superaste el record 😢`;
+  }
 }
 
 function showLives() {
@@ -191,7 +205,11 @@ function showLives() {
 }
 
 function showTime() {
-  spanTime.innerText = (Date.now() - timeStart) / 1000 + 's';
+  spanTime.innerText = Date.now() - timeStart + 'ms';
+}
+
+function showScore() {
+  spanScore.innerText = localStorage.getItem('recordTime') + 'ms';
 }
 
 function moveByKey(event) {

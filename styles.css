@@ -68,13 +68,15 @@ button {
 /* MESSAGES */
 .messages {
   display: flex;
-  width: 75%;
-  margin: 0 auto;
-  max-width: 460px;
+  width: 50%;
+  justify-content: space-evenly;
+  flex-wrap: wrap;
+  margin: 0 auto 50px;
 }
 
 p {
   display: block;
   margin: 0;
-  width: 100%;
+  min-width: 200px;
+  text-align: center;
 }
