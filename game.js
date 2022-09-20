@@ -4,6 +4,7 @@ const btnArrowDown = document.querySelector('#down');
 const btnArrowLeft = document.querySelector('#left');
 const btnArrowRight = document.querySelector('#right');
 const spanLives = document.querySelector('#lives');
+const spanTime = document.querySelector('#time');
 
 // const ctx = canvas.getContext('2d');
 const game = canvas.getContext('2d');
@@ -12,6 +13,10 @@ let canvasSize;
 let elementSize;
 let level = 0;
 let lives = 3;
+
+let timeStart;
+let timePlayer;
+let timeInterval;
 
 const playerPosition = { x: undefined, y: undefined };
 const giftPosition = { x: undefined, y: undefined };
@@ -55,6 +60,11 @@ function startGame() {
 
   const mapRows = map.trim().split('\n');
   const mapElements = mapRows.map((row) => row.trim().split('')); // Array multidimensional
+
+  if (!timeStart) {
+    timeStart = Date.now();
+    timeInterval = setInterval(showTime, 100);
+  }
 
   // // dibujar la matriz
   // for (let y = 1; y <= 10; y++) {
@@ -156,11 +166,13 @@ function levelFail() {
   if (lives == 0) {
     level = 0;
     lives = 3;
+    timeStart = undefined;
   }
 }
 
 function gameWin() {
   console.log('You Win!');
+  clearInterval(timeInterval);
 }
 
 function showLives() {
@@ -176,6 +188,10 @@ function showLives() {
 
   // forma 3
   spanLives.innerText = emojis['HEART'].repeat(lives);
+}
+
+function showTime() {
+  spanTime.innerText = (Date.now() - timeStart) / 1000 + 's';
 }
 
 function moveByKey(event) {
@@ -224,7 +240,7 @@ function moveLeft() {
 function moveRight() {
   console.log('right');
 
-  if ((playerPosition.x + elementSize).toFixed(2) > elementSize * 9) {
+  if (playerPosition.x + elementSize > elementSize * 9) {
     console.log('OUT');
   } else {
     playerPosition.x += elementSize;
