@@ -176,6 +176,11 @@ function levelFail() {
 function gameWin() {
   console.log('You Win!');
   clearInterval(timeInterval);
+
+  setScore();
+}
+
+function setScore() {
   timePlayer = Date.now() - timeStart;
 
   const recordTime = localStorage.getItem('recordTime');
