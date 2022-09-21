@@ -33,7 +33,7 @@ let verticalMovement;
 window.addEventListener('load', setCanvasSize);
 window.addEventListener('resize', setCanvasSize);
 
-function fixNumer(number, decimals = 0) {
+function fixNumer(number, decimals = 1) {
   return Number(number.toFixed(decimals));
 }
 
@@ -88,8 +88,8 @@ function startGame() {
   mapElements.forEach((row, rowIndex) => {
     row.forEach((colum, columIndex) => {
       const emoji = emojis[colum];
-      const posX = elementSize * columIndex;
-      const posY = elementSize * (rowIndex + 1);
+      const posX = fixNumer(elementSize * columIndex);
+      const posY = fixNumer(elementSize * (rowIndex + 1));
 
       game.fillText(emoji, posX, posY);
 
@@ -181,6 +181,11 @@ function levelFail() {
 
 function gameWin() {
   console.log('You Win!');
+  level = 0;
+
+  playerPosition.x = undefined;
+  playerPosition.y = undefined;
+
   clearInterval(timeInterval);
 
   setScore();
@@ -194,10 +199,14 @@ function setScore() {
 
   if (recordTime == undefined || timePlayer < recordTime) {
     localStorage.setItem('recordTime', timePlayer);
-    pResult.innerText = `New Record: ${timePlayer} s ✨`;
+    pResult.innerText = `NEW RECORD ✨`;
+
+    showScore();
   } else {
     pResult.innerText = `No superaste el record 😢`;
   }
+
+  timeStart = undefined;
 }
 
 function showLives() {
@@ -217,7 +226,7 @@ function showLives() {
 
 function showTime() {
   const time = (Date.now() - timeStart) / 1000;
-  spanTime.innerText = fixNumer(time, 1) + 's';
+  spanTime.innerText = fixNumer(time) + 's';
 }
 
 function showScore() {
@@ -225,7 +234,7 @@ function showScore() {
     spanScore.innerText = 'No hay record';
   } else {
     const time = localStorage.getItem('recordTime') / 1000;
-    spanScore.innerText = fixNumer(time, 1) + 's';
+    spanScore.innerText = fixNumer(time) + 's';
   }
 }
 
@@ -238,11 +247,12 @@ function moveByKey(event) {
 
 function moveUp() {
   console.log('up');
+  const futurePosition = fixNumer(playerPosition.y - elementSize);
 
-  if (playerPosition.y - elementSize < elementSize) {
+  if (futurePosition < elementSize) {
     console.log('OUT');
   } else {
-    playerPosition.y -= elementSize;
+    playerPosition.y = futurePosition;
     verticalMovement--;
 
     if (enemiesCollision()) {
@@ -256,11 +266,12 @@ function moveUp() {
 
 function moveLeft() {
   console.log('left');
+  const futurePosition = fixNumer(playerPosition.x - elementSize);
 
-  if (playerPosition.x - elementSize < 0) {
+  if (futurePosition < 0) {
     console.log('OUT');
   } else {
-    playerPosition.x -= elementSize;
+    playerPosition.x = futurePosition;
     horizontalMovement--;
 
     if (enemiesCollision()) {
@@ -274,11 +285,12 @@ function moveLeft() {
 
 function moveRight() {
   console.log('right');
+  const futurePosition = fixNumer(playerPosition.x + elementSize);
 
-  if (playerPosition.x + elementSize > elementSize * 9) {
+  if (futurePosition > elementSize * 9) {
     console.log('OUT');
   } else {
-    playerPosition.x += elementSize;
+    playerPosition.x = futurePosition;
     horizontalMovement++;
 
     if (enemiesCollision()) {
@@ -292,11 +304,12 @@ function moveRight() {
 
 function moveDown() {
   console.log('down');
+  const futurePosition = fixNumer(playerPosition.y + elementSize);
 
-  if (playerPosition.y + elementSize > elementSize * 10) {
+  if (futurePosition > elementSize * 10) {
     console.log('OUT');
   } else {
-    playerPosition.y += elementSize;
+    playerPosition.y = futurePosition;
     verticalMovement++;
 
     if (enemiesCollision()) {
