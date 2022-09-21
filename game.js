@@ -198,8 +198,6 @@ function setScore() {
   if (recordTime == undefined || timePlayer < recordTime) {
     localStorage.setItem('recordTime', timePlayer);
     pResult.innerText = `NEW RECORD ✨`;
-
-    showScore();
   } else {
     pResult.innerText = `No superaste el record 😢`;
   }
