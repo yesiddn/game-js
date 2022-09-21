@@ -7,6 +7,7 @@ const spanLives = document.querySelector('#lives');
 const spanTime = document.querySelector('#time');
 const spanScore = document.querySelector('#score');
 const pResult = document.querySelector('#result');
+const restartBtn = document.querySelector('#restart');
 
 // const ctx = canvas.getContext('2d');
 const game = canvas.getContext('2d');
@@ -60,7 +61,7 @@ function setCanvasSize() {
 }
 
 function startGame() {
-  game.font = `${elementSize}px Verdana`;
+  game.font = `${elementSize * 0.9}px Verdana`;
   // game.textAlign = 'end';
 
   // creacrión de la matriz de 10x10
@@ -133,6 +134,7 @@ btnArrowUp.addEventListener('click', moveUp);
 btnArrowLeft.addEventListener('click', moveLeft);
 btnArrowRight.addEventListener('click', moveRight);
 btnArrowDown.addEventListener('click', moveDown);
+restartBtn.addEventListener('click', () => restartGame());
 
 // document.addEventListener('keydown', keyPress); // Escucha el teclado solo cuando esta en el documento html
 window.addEventListener('keyup', moveByKey); // Escucha el teclado para todo el navegador
@@ -181,11 +183,7 @@ function levelFail() {
 
 function gameWin() {
   console.log('You Win!');
-  level = 0;
-
-  playerPosition.x = undefined;
-  playerPosition.y = undefined;
-
+  
   clearInterval(timeInterval);
 
   setScore();
@@ -205,8 +203,6 @@ function setScore() {
   } else {
     pResult.innerText = `No superaste el record 😢`;
   }
-
-  timeStart = undefined;
 }
 
 function showLives() {
@@ -321,4 +317,14 @@ function moveDown() {
     }
     startGame();
   }
+}
+
+function restartGame() {
+  level = 0;
+  lives = 3;
+  timeStart = undefined;
+  playerPosition.x = undefined;
+  playerPosition.y = undefined;
+
+  startGame();
 }
