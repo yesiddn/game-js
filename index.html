@@ -20,27 +20,30 @@
       <p>Score: 🏆<span id="score"></span></p>
     </div>
 
-    <section class="game-finish">
-      <div class="game__win">
+    <section class="game inactive" id="game--win">
+      <div class="game__message">
         <h2>¡Has ganado!</h2>
         <p>¡Enhorabuena! Has conseguido llegar a la meta.</p>
+        <p class="result"></p>
         <p>¿Quieres volver a jugar?</p>
-        <button class="play-again">
+        <button class="play-again" id="play-again--win">
           Sí, quiero volver a jugar
           <span class="material-symbols-outlined"> restart_alt </span>
         </button>
       </div>
+    </section>
 
-      <div class="game__over">
+    <section class="game inactive" id="game--over">
+      <div class="game__message">
         <h2>¡Has perdido!</h2>
         <p>¡Lo siento! Has perdido todas tus vidas.</p>
+        <p class="result"></p>
         <p>¿Quieres volver a jugar?</p>
-        <button class="play-again">
+        <button class="play-again" id="play-again--over">
           Sí, quiero volver a jugar
           <span class="material-symbols-outlined"> restart_alt </span>
         </button>
       </div>
-      <p id="result"></p>
     </section>
 
     <div class="game-container">
@@ -55,10 +58,8 @@
           <button type="button" id="left">
             <span class="material-symbols-outlined"> keyboard_arrow_left </span>
           </button>
-          <button type="button" id="restart">
-            <span class="material-symbols-outlined">
-              check_box_outline_blank
-            </span>
+          <button type="button" id="play-again">
+            <span class="material-symbols-outlined"> restart_alt </span>
           </button>
           <button type="button" id="right">
             <span class="material-symbols-outlined">

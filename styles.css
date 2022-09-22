@@ -10,6 +10,14 @@ body {
   padding: 0;
 }
 
+.active {
+  display: flex;
+}
+
+.inactive {
+  display: none;
+}
+
 .game-container {
   display: flex;
   justify-content: center;
@@ -80,39 +88,47 @@ p {
 }
 
 /* Game ... */
-.game-finish {
+.game {
   position: absolute;
-  display: flex;
   width: 80vw;
-  height: 40vh;
+  height: 80vh;
   margin: auto;
   padding: 20px;
   left: 0;
   right: 0;
+  /* flex-direction: column;
   flex-wrap: wrap;
   justify-content: center;
-  align-content: center;
+  align-content: center; */
   border: 2px solid #ff6600;
   border-radius: 25px;
   background-color: #7908db;
   text-align: center;
 }
 
-h2 {
-  margin-bottom: 20px;
-}
-.game__win p:nth-child(3), .game__over p:nth-child(3) {
-  margin-top: 10px;
+.game__message {
+  margin: auto;
 }
 
-.game__over {
-  display: none;
+.game__message h2 {
+  margin-bottom: 30px;
 }
+
+.game__message p:nth-child(3) {
+  margin-top: 15px;
+}
+
 .play-again {
   width: 80%;
-  margin: 15px;
+  margin: 15px auto;
   padding: 10px;
 }
+
+.play-again:hover {
+  background-color: #ff6600;
+  cursor: pointer;
+}
+
 .play-again span {
   display: block;
   margin-top: 10px;

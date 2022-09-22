@@ -6,8 +6,12 @@ const btnArrowRight = document.querySelector('#right');
 const spanLives = document.querySelector('#lives');
 const spanTime = document.querySelector('#time');
 const spanScore = document.querySelector('#score');
-const pResult = document.querySelector('#result');
-const restartBtn = document.querySelector('#restart');
+const pResult = document.querySelector('.result');
+const playAgain = document.querySelector('#play-again');
+const playAgainWin = document.querySelector('#play-again--win');
+const playAgainOver = document.querySelector('#play-again--over');
+const modalGameWin = document.querySelector('#game--win');
+const modalGameOver = document.querySelector('#game--over');
 
 // const ctx = canvas.getContext('2d');
 const game = canvas.getContext('2d');
@@ -134,7 +138,9 @@ btnArrowUp.addEventListener('click', moveUp);
 btnArrowLeft.addEventListener('click', moveLeft);
 btnArrowRight.addEventListener('click', moveRight);
 btnArrowDown.addEventListener('click', moveDown);
-restartBtn.addEventListener('click', () => restartGame());
+playAgain.addEventListener('click', restartGame);
+playAgainWin.addEventListener('click', restartGame);
+playAgainOver.addEventListener('click', restartGame);
 
 // document.addEventListener('keydown', keyPress); // Escucha el teclado solo cuando esta en el documento html
 window.addEventListener('keyup', moveByKey); // Escucha el teclado para todo el navegador
@@ -144,9 +150,7 @@ function giftCollision() {
   const collisionY = playerPosition.y == giftPosition.y;
   const collision = collisionX && collisionY;
 
-  if (collision) {
-    levelWin();
-  }
+  return collision;
 }
 
 function enemiesCollision() {
@@ -162,22 +166,29 @@ function enemiesCollision() {
 function levelWin() {
   if (level < maps.length - 1) {
     level++;
+    startGame();
   } else {
     gameWin();
   }
 }
 
 function levelFail() {
-  lives--;
-  console.log('You Lose!');
-  console.log({ lives });
-  playerPosition.x = undefined;
-  playerPosition.y = undefined;
+  if (lives == 1) {
+    lives--;
+    console.log('You Lose!');
+  }
 
   if (lives == 0) {
-    level = 0;
-    lives = 3;
-    timeStart = undefined;
+    clearInterval(timeInterval);
+    openModal(modalGameOver);
+  }
+
+  if (lives > 1) {
+    lives--;
+    console.log('You Lose!');
+    console.log({ lives });
+    playerPosition.x = undefined;
+    playerPosition.y = undefined;
   }
 }
 
@@ -185,6 +196,7 @@ function gameWin() {
   console.log('You Win!');
   
   clearInterval(timeInterval);
+  openModal(modalGameWin);
 
   setScore();
 }
@@ -251,8 +263,8 @@ function moveUp() {
 
     if (enemiesCollision()) {
       levelFail();
-    } else {
-      giftCollision();
+    } else if (giftCollision()) {
+      levelWin();
     }
     startGame();
   }
@@ -270,8 +282,8 @@ function moveLeft() {
 
     if (enemiesCollision()) {
       levelFail();
-    } else {
-      giftCollision();
+    } else if (giftCollision()) {
+      levelWin();
     }
     startGame();
   }
@@ -290,8 +302,8 @@ function moveRight() {
 
     if (enemiesCollision()) {
       levelFail();
-    } else {
-      giftCollision();
+    } else if (giftCollision()) {
+      levelWin();
     }
     startGame();
   }
@@ -310,19 +322,37 @@ function moveDown() {
 
     if (enemiesCollision()) {
       levelFail();
-    } else {
-      giftCollision();
+    } else if (giftCollision()) {
+      levelWin();
     }
     startGame();
   }
 }
 
 function restartGame() {
+  const isModalWinOpen = modalGameWin.classList.contains('active');
+  const isModalOverOpen = modalGameOver.classList.contains('active');
   level = 0;
   lives = 3;
   timeStart = undefined;
   playerPosition.x = undefined;
   playerPosition.y = undefined;
 
+  if (isModalWinOpen) {
+    closeModal(modalGameWin);
+  } else if (isModalOverOpen) {
+    closeModal(modalGameOver);
+  }
+
   startGame();
+}
+
+function closeModal(modal) {
+  modal.classList.toggle('inactive');
+  modal.classList.toggle('active');
+}
+
+function openModal(modal) {
+  modal.classList.toggle('active');
+  modal.classList.toggle('inactive');
 }
