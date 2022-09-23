@@ -15,10 +15,32 @@
 
   <body>
     <div class="messages">
-      <p id="lives"></p>
+      <p id="lives">❤️❤️❤️</p>
       <p>Time: ⏱️<span id="time"></span></p>
       <p>Score: 🏆<span id="score"></span></p>
     </div>
+
+    <section class="game active" id="game--start">
+      <div class="game--start__message">
+        <h1>Skulline</h1>
+        <p>
+          ¡Veamos si eres capaz de superar tu récord en este juego de carreras y
+          calaveras! 🏆
+        </p>
+        <button id="play-game">
+          Iniciar juego
+          <span class="material-symbols-outlined"> play_arrow </span>
+        </button>
+        <div class="message__tip">
+          <span class="material-symbols-outlined"> info </span>
+          <h3>TIP:</h3>
+          <p>
+            Usa las teclas de dirección para moverte y la barra espaciadora para
+            reiniciar el juego.
+          </p>
+        </div>
+      </div>
+    </section>
 
     <section class="game inactive" id="game--win">
       <div class="game__message">

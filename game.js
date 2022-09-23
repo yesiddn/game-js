@@ -1,3 +1,4 @@
+const playGame = document.getElementById('play-game');
 const canvas = document.querySelector('#game');
 const btnArrowUp = document.querySelector('#up');
 const btnArrowDown = document.querySelector('#down');
@@ -12,6 +13,11 @@ const playAgainWin = document.querySelector('#play-again--win');
 const playAgainOver = document.querySelector('#play-again--over');
 const modalGameWin = document.querySelector('#game--win');
 const modalGameOver = document.querySelector('#game--over');
+const modalStartGame = document.querySelector('#game--start');
+
+playGame.addEventListener('click', setCanvasSize);
+// window.addEventListener('load', setCanvasSize);
+window.addEventListener('resize', setCanvasSize);
 
 // const ctx = canvas.getContext('2d');
 const game = canvas.getContext('2d');
@@ -27,6 +33,7 @@ let timeInterval;
 
 const playerPosition = { x: undefined, y: undefined };
 const giftPosition = { x: undefined, y: undefined };
+const lastPosition = { x: undefined, y: undefined };
 let enemiesPosition = [];
 let horizontalMovement;
 let verticalMovement;
@@ -35,14 +42,15 @@ let verticalMovement;
 // game.fillReact(x, y, x, y) donde iniciará nuestro trazo o lo que se desee y donde terminará
 // game.fillText
 
-window.addEventListener('load', setCanvasSize);
-window.addEventListener('resize', setCanvasSize);
-
 function fixNumber(number, decimals = 1) {
   return Number(number.toFixed(decimals));
 }
 
 function setCanvasSize() {
+  const isModalStartOpen = modalStartGame.classList.contains('active');
+  if (isModalStartOpen) {
+    closeModal(modalStartGame);
+  }
   if (window.innerHeight > window.innerWidth) {
     canvasSize = window.innerWidth * 0.7;
   } else {
@@ -117,6 +125,7 @@ function startGame() {
 
   showLives();
   movePlayer();
+  fillLastPosition();
 
   console.log({ canvasSize, elementSize });
 
@@ -173,6 +182,9 @@ function levelWin() {
 }
 
 function levelFail() {
+  lastPosition.x = playerPosition.x;
+  lastPosition.y = playerPosition.y;
+
   if (lives == 1) {
     lives--;
     console.log('You Lose!');
@@ -194,7 +206,7 @@ function levelFail() {
 
 function gameWin() {
   console.log('You Win!');
-  
+
   clearInterval(timeInterval);
   openModal(modalGameWin);
 
@@ -262,6 +274,11 @@ function moveUp() {
     verticalMovement--;
 
     if (enemiesCollision()) {
+      game.fillText(
+        emojis['BOMB_COLLISION'],
+        playerPosition.x,
+        playerPosition.y
+      );
       levelFail();
     } else if (giftCollision()) {
       levelWin();
@@ -281,6 +298,11 @@ function moveLeft() {
     horizontalMovement--;
 
     if (enemiesCollision()) {
+      game.fillText(
+        emojis['BOMB_COLLISION'],
+        playerPosition.x,
+        playerPosition.y
+      );
       levelFail();
     } else if (giftCollision()) {
       levelWin();
@@ -301,6 +323,11 @@ function moveRight() {
     horizontalMovement++;
 
     if (enemiesCollision()) {
+      game.fillText(
+        emojis['BOMB_COLLISION'],
+        playerPosition.x,
+        playerPosition.y
+      );
       levelFail();
     } else if (giftCollision()) {
       levelWin();
@@ -321,6 +348,11 @@ function moveDown() {
     verticalMovement++;
 
     if (enemiesCollision()) {
+      game.fillText(
+        emojis['BOMB_COLLISION'],
+        playerPosition.x,
+        playerPosition.y
+      );
       levelFail();
     } else if (giftCollision()) {
       levelWin();
@@ -355,4 +387,15 @@ function closeModal(modal) {
 function openModal(modal) {
   modal.classList.toggle('active');
   modal.classList.toggle('inactive');
+}
+
+function fillLastPosition() { 
+  if (lastPosition.x != undefined) {
+    game.fillText(emojis['BOMB_COLLISION'], lastPosition.x, lastPosition.y);
+    setTimeout(() => {
+      lastPosition.x = undefined;
+      lastPosition.y = undefined;
+      startGame();
+    }, 3000);
+  }
 }

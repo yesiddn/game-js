@@ -51,6 +51,7 @@ button {
   border-radius: 15px;
   border-color: #ff6600;
   font-family: inherit;
+  cursor: pointer;
 }
 
 #up {
@@ -106,20 +107,42 @@ p {
   text-align: center;
 }
 
+.game--start__message,
 .game__message {
   margin: auto;
 }
 
+.game--start__message h1,
 .game__message h2 {
   margin-bottom: 30px;
+}
+
+.game--start__message p {
+  margin-bottom: 20px;
+}
+
+.message__tip {
+  margin-top: 20px;
+  padding: 10px;
+  border-radius: 20px;
+  background-color: #8e36db;
 }
 
 .game__message p:nth-child(3) {
   margin-top: 15px;
 }
 
+#play-game {
+  width: 40%;
+}
+
+#play-game:hover {
+  background-color: #ff6600;
+}
+
+
 .play-again {
-  width: 80%;
+  min-width: 80%;
   margin: 15px auto;
   padding: 10px;
 }
@@ -129,7 +152,7 @@ p {
   cursor: pointer;
 }
 
-.play-again span {
+#play-game span, .play-again span {
   display: block;
   margin-top: 10px;
 }
