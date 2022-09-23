@@ -48,9 +48,13 @@ function fixNumber(number, decimals = 1) {
 
 function setCanvasSize() {
   const isModalStartOpen = modalStartGame.classList.contains('active');
+  const isModalWinOpen = modalGameWin.classList.contains('active');
+  const isModalOverOpen = modalGameOver.classList.contains('active');
+
   if (isModalStartOpen) {
     closeModal(modalStartGame);
   }
+
   if (window.innerHeight > window.innerWidth) {
     canvasSize = window.innerWidth * 0.7;
   } else {
@@ -67,6 +71,10 @@ function setCanvasSize() {
   if (playerPosition.x != undefined) {
     playerPosition.x = horizontalMovement * elementSize;
     playerPosition.y = verticalMovement * elementSize;
+  }
+
+  if (isModalWinOpen || isModalOverOpen) {
+    return;
   }
 
   startGame();
@@ -264,6 +272,11 @@ function moveByKey(event) {
 }
 
 function moveUp() {
+  const isModalStartOpen = modalStartGame.classList.contains('active');
+  const isModalWinOpen = modalGameWin.classList.contains('active');
+  const isModalOverOpen = modalGameOver.classList.contains('active');
+  if (isModalStartOpen || isModalWinOpen || isModalOverOpen) return;
+
   console.log('up');
   const futurePosition = fixNumber(playerPosition.y - elementSize);
 
@@ -288,6 +301,11 @@ function moveUp() {
 }
 
 function moveLeft() {
+  const isModalStartOpen = modalStartGame.classList.contains('active');
+  const isModalWinOpen = modalGameWin.classList.contains('active');
+  const isModalOverOpen = modalGameOver.classList.contains('active');
+  if (isModalStartOpen || isModalWinOpen || isModalOverOpen) return;
+  
   console.log('left');
   const futurePosition = fixNumber(playerPosition.x - elementSize);
 
@@ -312,6 +330,11 @@ function moveLeft() {
 }
 
 function moveRight() {
+  const isModalStartOpen = modalStartGame.classList.contains('active');
+  const isModalWinOpen = modalGameWin.classList.contains('active');
+  const isModalOverOpen = modalGameOver.classList.contains('active');
+  if (isModalStartOpen || isModalWinOpen || isModalOverOpen) return;
+  
   console.log('right');
   const futurePosition = fixNumber(playerPosition.x + elementSize);
   const limit = fixNumber(elementSize * 9);
@@ -337,6 +360,11 @@ function moveRight() {
 }
 
 function moveDown() {
+  const isModalStartOpen = modalStartGame.classList.contains('active');
+  const isModalWinOpen = modalGameWin.classList.contains('active');
+  const isModalOverOpen = modalGameOver.classList.contains('active');
+  if (isModalStartOpen || isModalWinOpen || isModalOverOpen) return;
+  
   console.log('down');
   const futurePosition = fixNumber(playerPosition.y + elementSize);
   const limit = fixNumber(elementSize * 10);
