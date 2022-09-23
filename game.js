@@ -1,35 +1,19 @@
-const playGame = document.getElementById('play-game');
+const playGameBtn = document.querySelector('#play-game');
 const canvas = document.querySelector('#game');
-const btnArrowUp = document.querySelector('#up');
-const btnArrowDown = document.querySelector('#down');
-const btnArrowLeft = document.querySelector('#left');
-const btnArrowRight = document.querySelector('#right');
-const spanLives = document.querySelector('#lives');
-const spanTime = document.querySelector('#time');
-const spanScore = document.querySelector('#score');
-const pResult = document.querySelector('.result');
-const playAgain = document.querySelector('#play-again');
-const playAgainWin = document.querySelector('#play-again--win');
-const playAgainOver = document.querySelector('#play-again--over');
+
+// BUTTONS
+
+// MODALS
+const modalStartGame = document.querySelector('#game--start');
 const modalGameWin = document.querySelector('#game--win');
 const modalGameOver = document.querySelector('#game--over');
-const modalStartGame = document.querySelector('#game--start');
 
-playGame.addEventListener('click', setCanvasSize);
-// window.addEventListener('load', setCanvasSize);
-window.addEventListener('resize', setCanvasSize);
-
-// const ctx = canvas.getContext('2d');
+// VARIABLES
 const game = canvas.getContext('2d');
-
 let canvasSize;
 let elementSize;
 let level = 0;
 let lives = 3;
-
-let timeStart;
-let timePlayer;
-let timeInterval;
 
 const playerPosition = { x: undefined, y: undefined };
 const giftPosition = { x: undefined, y: undefined };
@@ -38,23 +22,51 @@ let enemiesPosition = [];
 let horizontalMovement;
 let verticalMovement;
 
-// METODOS:
-// game.fillReact(x, y, x, y) donde iniciará nuestro trazo o lo que se desee y donde terminará
-// game.fillText
-
+/**
+ * Function that will fix the number to 1 decimal places or more.
+ * @param {*} number Number to fix
+ * @param {*} decimals Number of decimals to fix
+ * @returns Number with the number of decimals specified
+ */
 function fixNumber(number, decimals = 1) {
   return Number(number.toFixed(decimals));
 }
 
-function setCanvasSize() {
-  const isModalStartOpen = modalStartGame.classList.contains('active');
-  const isModalWinOpen = modalGameWin.classList.contains('active');
-  const isModalOverOpen = modalGameOver.classList.contains('active');
+function isModalOpen() {
+  const isModalStartGameOpen = modalStartGame.classList.contains('active');
+  const isModalGameWinOpen = modalGameWin.classList.contains('active');
+  const isModalGameOverOpen = modalGameOver.classList.contains('active');
 
-  if (isModalStartOpen) {
-    closeModal(modalStartGame);
+  if (isModalStartGameOpen || isModalGameWinOpen || isModalGameOverOpen) {
+    return true;
+  } else {
+    return false;
   }
+}
 
+/**
+ * Function that will change the state of the modal.
+ * If the modal is open, close it.
+ * @param {*} modal Name of the modal to change the state
+ */
+function changeModalState(modal) {
+  modal.classList.toggle('inactive');
+  modal.classList.toggle('active');
+}
+
+function playGame() {
+  changeModalState(modalStartGame);
+
+  renderGame();
+}
+
+function renderGame() {
+  setCanvasSize();
+  drawCanvasContent();
+  drawPlayer();
+}
+
+function setCanvasSize() {
   if (window.innerHeight > window.innerWidth) {
     canvasSize = window.innerWidth * 0.7;
   } else {
@@ -65,111 +77,61 @@ function setCanvasSize() {
   canvas.setAttribute('width', canvasSize);
   canvas.setAttribute('height', canvasSize);
 
-  elementSize = (canvasSize / 10) * 0.97;
+  elementSize = (canvasSize / maps[level].length) * 0.97;
   elementSize = fixNumber(elementSize);
-
-  if (playerPosition.x != undefined) {
-    playerPosition.x = horizontalMovement * elementSize;
-    playerPosition.y = verticalMovement * elementSize;
-  }
-
-  if (isModalWinOpen || isModalOverOpen) {
-    return;
-  }
-
-  startGame();
 }
 
-function startGame() {
-  game.font = `${elementSize * 0.9}px Verdana`;
-  // game.textAlign = 'end';
-
-  // creacrión de la matriz de 10x10
-  const map = maps[level];
-
-  const mapRows = map.trim().split('\n');
-  const mapElements = mapRows.map((row) => row.trim().split('')); // Array multidimensional
-
-  if (!timeStart) {
-    timeStart = Date.now();
-    timeInterval = setInterval(showTime, 100);
-    showScore();
-  }
-
-  // // dibujar la matriz
-  // for (let y = 1; y <= 10; y++) {
-  //   for (let x = 1; x <= 10; x++) {
-  //     game.fillText(emojis[mapElements[y - 1][x - 1]], (elementSize * x) + 7, (elementSize * y) - 7);
-  //   }
-  // }
-
-  enemiesPosition = [];
+// DRAW CANVAS CONTENT
+function drawCanvasContent() {
   game.clearRect(0, 0, canvasSize, canvasSize);
+  enemiesPosition = [];
+  game.font = `${elementSize * 0.85}px Verdana`;
 
-  mapElements.forEach((row, rowIndex) => {
+  const map = maps[level];
+  const mapRows = map.map((row) => row.split(''));
+  mapRows.forEach((row, rowIndex) => {
     row.forEach((colum, columIndex) => {
       const emoji = emojis[colum];
-      const posX = fixNumber(elementSize * columIndex);
-      const posY = fixNumber(elementSize * (rowIndex + 1));
+      const posX = fixNumber(columIndex * elementSize);
+      const posY = fixNumber((rowIndex + 1) * elementSize);
 
-      game.fillText(emoji, posX, posY);
+      drawElement(emoji, posX, posY);
 
-      if (playerPosition.x == undefined && colum == 'O') {
-        playerPosition.x = posX;
-        playerPosition.y = posY;
-
-        horizontalMovement = columIndex;
-        verticalMovement = rowIndex + 1;
-
-        console.log({ playerPosition });
+      if (colum == 'X') {
+        enemiesPosition.push({ x: posX, y: posY });
       } else if (colum == 'I') {
         giftPosition.x = posX;
         giftPosition.y = posY;
-      } else if (colum == 'X') {
-        enemiesPosition.push({ x: posX, y: posY });
+      } else if (colum == 'O' && playerPosition.x == undefined) {
+        playerPosition.x = posX;
+        playerPosition.y = posY;
+        horizontalMovement = columIndex;
+        verticalMovement = rowIndex + 1;
       }
     });
   });
-
-  showLives();
-  movePlayer();
-  fillLastPosition();
-
-  console.log({ canvasSize, elementSize });
-
-  // game.fillRect(0, 0, 100, 100); // crea una zona en el canvas
-  // game.clearRect(50, 50, 100, 100); // borra una zona en el canvas
-
-  // game.font = '25px Verdana';
-  // game.fillStyle = 'purple';
-  // game.textAlign = 'center';
-  // game.fillText('Hola', 100, 100); // escribe un texto en el canvas
 }
 
-function movePlayer() {
-  game.fillText(emojis['PLAYER'], playerPosition.x, playerPosition.y);
-  console.log({ playerPosition });
+function drawPlayer() {
+  drawElement(emojis['PLAYER'], playerPosition.x, playerPosition.y);
 }
 
-btnArrowUp.addEventListener('click', moveUp);
-btnArrowLeft.addEventListener('click', moveLeft);
-btnArrowRight.addEventListener('click', moveRight);
-btnArrowDown.addEventListener('click', moveDown);
-playAgain.addEventListener('click', restartGame);
-playAgainWin.addEventListener('click', restartGame);
-playAgainOver.addEventListener('click', restartGame);
-
-// document.addEventListener('keydown', keyPress); // Escucha el teclado solo cuando esta en el documento html
-window.addEventListener('keyup', moveByKey); // Escucha el teclado para todo el navegador
-
-function giftCollision() {
-  const collisionX = playerPosition.x == giftPosition.x;
-  const collisionY = playerPosition.y == giftPosition.y;
-  const collision = collisionX && collisionY;
-
-  return collision;
+function drawElement(emoji, posX, posY) {
+  game.fillText(emoji, posX, posY);
 }
 
+function drawLastPosition() {
+  if (lastPosition.x != undefined) {
+    game.fillText(emojis['BOMB_COLLISION'], lastPosition.x, lastPosition.y);
+    setTimeout(() => {
+      lastPosition.x = undefined;
+      lastPosition.y = undefined;
+      renderGame();
+    }, 3000);
+  }
+}
+
+// COLLISIONS
 function enemiesCollision() {
   const collision = enemiesPosition.find((enemy) => {
     const collisionX = playerPosition.x == enemy.x;
@@ -180,90 +142,18 @@ function enemiesCollision() {
   return collision;
 }
 
-function levelWin() {
-  if (level < maps.length - 1) {
-    level++;
-    startGame();
-  } else {
-    gameWin();
-  }
-}
-
+// LEVELS LOSE AND WIN
 function levelFail() {
-  lastPosition.x = playerPosition.x;
-  lastPosition.y = playerPosition.y;
-
-  if (lives == 1) {
-    lives--;
-    console.log('You Lose!');
-  }
-
+  lives--;
   if (lives == 0) {
-    clearInterval(timeInterval);
-    openModal(modalGameOver);
-  }
-
-  if (lives > 1) {
-    lives--;
-    console.log('You Lose!');
-    console.log({ lives });
+    changeModalState(modalGameOver);
+  } else {
     playerPosition.x = undefined;
     playerPosition.y = undefined;
   }
 }
 
-function gameWin() {
-  console.log('You Win!');
-
-  clearInterval(timeInterval);
-  openModal(modalGameWin);
-
-  setScore();
-}
-
-function setScore() {
-  timePlayer = Date.now() - timeStart;
-
-  const recordTime = localStorage.getItem('recordTime');
-  console.log({ recordTime, timePlayer });
-
-  if (recordTime == undefined || timePlayer < recordTime) {
-    localStorage.setItem('recordTime', timePlayer);
-    pResult.innerText = `NEW RECORD ✨`;
-  } else {
-    pResult.innerText = `No superaste el record 😢`;
-  }
-}
-
-function showLives() {
-  // Array(lives) // [x, x, x]
-  const heartsArray = Array(lives).fill(emojis['HEART']);
-
-  // forma 1
-  // spanLives.innerText = heartsArray.join('');
-
-  // forma 2
-  // spanLives.innerText = '';
-  // heartsArray.forEach(heart => spanLives.append(heart));
-
-  // forma 3
-  spanLives.innerText = emojis['HEART'].repeat(lives);
-}
-
-function showTime() {
-  const time = (Date.now() - timeStart) / 1000;
-  spanTime.innerText = fixNumber(time) + 's';
-}
-
-function showScore() {
-  if (!localStorage.getItem('recordTime')) {
-    spanScore.innerText = 'No hay record';
-  } else {
-    const time = localStorage.getItem('recordTime') / 1000;
-    spanScore.innerText = fixNumber(time) + 's';
-  }
-}
-
+// MOVE PLAYER
 function moveByKey(event) {
   if (event.key == 'ArrowUp') moveUp();
   else if (event.key == 'ArrowLeft') moveLeft();
@@ -272,10 +162,9 @@ function moveByKey(event) {
 }
 
 function moveUp() {
-  const isModalStartOpen = modalStartGame.classList.contains('active');
-  const isModalWinOpen = modalGameWin.classList.contains('active');
-  const isModalOverOpen = modalGameOver.classList.contains('active');
-  if (isModalStartOpen || isModalWinOpen || isModalOverOpen) return;
+  if (isModalOpen()) {
+    return;
+  }
 
   console.log('up');
   const futurePosition = fixNumber(playerPosition.y - elementSize);
@@ -293,19 +182,18 @@ function moveUp() {
         playerPosition.y
       );
       levelFail();
-    } else if (giftCollision()) {
-      levelWin();
     }
-    startGame();
   }
+
+  renderGame();
 }
 
 function moveLeft() {
-  const isModalStartOpen = modalStartGame.classList.contains('active');
-  const isModalWinOpen = modalGameWin.classList.contains('active');
-  const isModalOverOpen = modalGameOver.classList.contains('active');
-  if (isModalStartOpen || isModalWinOpen || isModalOverOpen) return;
-  
+  if (isModalOpen()) {
+    console.log('left');
+    return;
+  }
+
   console.log('left');
   const futurePosition = fixNumber(playerPosition.x - elementSize);
 
@@ -322,19 +210,17 @@ function moveLeft() {
         playerPosition.y
       );
       levelFail();
-    } else if (giftCollision()) {
-      levelWin();
     }
-    startGame();
   }
+
+  renderGame();
 }
 
 function moveRight() {
-  const isModalStartOpen = modalStartGame.classList.contains('active');
-  const isModalWinOpen = modalGameWin.classList.contains('active');
-  const isModalOverOpen = modalGameOver.classList.contains('active');
-  if (isModalStartOpen || isModalWinOpen || isModalOverOpen) return;
-  
+  if (isModalOpen()) {
+    return;
+  }
+
   console.log('right');
   const futurePosition = fixNumber(playerPosition.x + elementSize);
   const limit = fixNumber(elementSize * 9);
@@ -352,19 +238,17 @@ function moveRight() {
         playerPosition.y
       );
       levelFail();
-    } else if (giftCollision()) {
-      levelWin();
     }
-    startGame();
   }
+
+  renderGame();
 }
 
 function moveDown() {
-  const isModalStartOpen = modalStartGame.classList.contains('active');
-  const isModalWinOpen = modalGameWin.classList.contains('active');
-  const isModalOverOpen = modalGameOver.classList.contains('active');
-  if (isModalStartOpen || isModalWinOpen || isModalOverOpen) return;
-  
+  if (isModalOpen()) {
+    return;
+  }
+
   console.log('down');
   const futurePosition = fixNumber(playerPosition.y + elementSize);
   const limit = fixNumber(elementSize * 10);
@@ -382,48 +266,14 @@ function moveDown() {
         playerPosition.y
       );
       levelFail();
-    } else if (giftCollision()) {
-      levelWin();
     }
-    startGame();
-  }
-}
-
-function restartGame() {
-  const isModalWinOpen = modalGameWin.classList.contains('active');
-  const isModalOverOpen = modalGameOver.classList.contains('active');
-  level = 0;
-  lives = 3;
-  timeStart = undefined;
-  playerPosition.x = undefined;
-  playerPosition.y = undefined;
-
-  if (isModalWinOpen) {
-    closeModal(modalGameWin);
-  } else if (isModalOverOpen) {
-    closeModal(modalGameOver);
   }
 
-  startGame();
+  renderGame();
 }
 
-function closeModal(modal) {
-  modal.classList.toggle('inactive');
-  modal.classList.toggle('active');
-}
-
-function openModal(modal) {
-  modal.classList.toggle('active');
-  modal.classList.toggle('inactive');
-}
-
-function fillLastPosition() { 
-  if (lastPosition.x != undefined) {
-    game.fillText(emojis['BOMB_COLLISION'], lastPosition.x, lastPosition.y);
-    setTimeout(() => {
-      lastPosition.x = undefined;
-      lastPosition.y = undefined;
-      startGame();
-    }, 3000);
-  }
-}
+// EVENTS
+window.addEventListener('resize', renderGame);
+window.addEventListener('load', renderGame);
+window.addEventListener('keyup', moveByKey);
+playGameBtn.addEventListener('click', playGame);
