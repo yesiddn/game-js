@@ -1,5 +1,11 @@
 const playGameBtn = document.querySelector('#play-game');
 const canvas = document.querySelector('#game');
+const spanLives = document.querySelector('#lives');
+const spanTime = document.querySelector('#time');
+const spanScore = document.querySelector('#score');
+const pResult = document.querySelector('.result');
+const btnPlayAgainWin = document.querySelector('#play-again--win');
+const btnPlayAgainOver = document.querySelector('#play-again--over');
 
 // BUTTONS
 
@@ -15,6 +21,12 @@ let elementSize;
 let level = 0;
 let lives = 3;
 
+// TIMER
+let timeStart;
+let timePlayer;
+let timeInterval;
+
+// PLAYER MOVEMENT AND COLLISIONS
 const playerPosition = { x: undefined, y: undefined };
 const giftPosition = { x: undefined, y: undefined };
 const lastPosition = { x: undefined, y: undefined };
@@ -54,13 +66,43 @@ function changeModalState(modal) {
   modal.classList.toggle('active');
 }
 
+function setTimeStart() {
+  if (!timeStart) {
+    timeStart = Date.now();
+    timeInterval = setInterval(showTime, 100);
+    showScore();
+  }
+}
+
+function restartGame() {
+  lives = 3;
+  level = 0;
+  timeStart = undefined;
+  playerPosition.x = undefined;
+  playerPosition.y = undefined;
+
+  playGame();
+}
+
 function playGame() {
-  changeModalState(modalStartGame);
+  const isModalStartGameOpen = modalStartGame.classList.contains('active');
+  const isModalGameWinOpen = modalGameWin.classList.contains('active');
+  const isModalGameOverOpen = modalGameOver.classList.contains('active');
+
+  if (isModalStartGameOpen) {
+    changeModalState(modalStartGame);
+  } else if (isModalGameWinOpen) {
+    changeModalState(modalGameWin);
+  } else if (isModalGameOverOpen) {
+    changeModalState(modalGameOver);
+  }
 
   renderGame();
+  setTimeStart();
 }
 
 function renderGame() {
+  showLives();
   setCanvasSize();
   drawCanvasContent();
   drawPlayer();
@@ -131,6 +173,37 @@ function drawLastPosition() {
   }
 }
 
+function showLives() {
+  spanLives.innerText = emojis['HEART'].repeat(lives);
+}
+
+function showTime() {
+  const time = (Date.now() - timeStart) / 1000;
+  spanTime.innerText = fixNumber(time) + 's';
+}
+
+function showScore() {
+  if (!localStorage.getItem('recordTime')) {
+    spanScore.innerText = 'No hay record';
+  } else {
+    const time = localStorage.getItem('recordTime') / 1000;
+    spanScore.innerText = fixNumber(time) + 's';
+  }
+}
+
+function setScore() {
+  timePlayer = Date.now() - timeStart;
+
+  const recordTime = localStorage.getItem('recordTime');
+
+  if (recordTime == undefined || timePlayer < recordTime) {
+    localStorage.setItem('recordTime', timePlayer);
+    pResult.innerText = `NEW RECORD ✨`;
+  } else {
+    pResult.innerText = `No superaste el record 😢`;
+  }
+}
+
 // COLLISIONS
 function enemiesCollision() {
   const collision = enemiesPosition.find((enemy) => {
@@ -142,15 +215,42 @@ function enemiesCollision() {
   return collision;
 }
 
+function giftCollision() {
+  const collisionX = playerPosition.x == giftPosition.x;
+  const collisionY = playerPosition.y == giftPosition.y;
+  const collision = collisionX && collisionY;
+
+  return collision;
+}
+
 // LEVELS LOSE AND WIN
 function levelFail() {
   lives--;
+  lastPosition.x = playerPosition.x;
+  lastPosition.y = playerPosition.y;
+
   if (lives == 0) {
+    clearInterval(timeInterval);
     changeModalState(modalGameOver);
   } else {
     playerPosition.x = undefined;
     playerPosition.y = undefined;
   }
+}
+
+function levelWin() {
+  if (level < maps.length - 1) {
+    level++;
+  } else {
+    gameWin();
+  }
+}
+
+function gameWin() {
+  console.log('You Win!');
+  clearInterval(timeInterval);
+  setScore();
+  changeModalState(modalGameWin);
 }
 
 // MOVE PLAYER
@@ -182,10 +282,13 @@ function moveUp() {
         playerPosition.y
       );
       levelFail();
+    } else if (giftCollision()) {
+      levelWin();
     }
   }
 
   renderGame();
+  drawLastPosition();
 }
 
 function moveLeft() {
@@ -210,10 +313,13 @@ function moveLeft() {
         playerPosition.y
       );
       levelFail();
+    } else if (giftCollision()) {
+      levelWin();
     }
   }
 
   renderGame();
+  drawLastPosition();
 }
 
 function moveRight() {
@@ -238,10 +344,13 @@ function moveRight() {
         playerPosition.y
       );
       levelFail();
+    } else if (giftCollision()) {
+      levelWin();
     }
   }
 
   renderGame();
+  drawLastPosition();
 }
 
 function moveDown() {
@@ -266,10 +375,13 @@ function moveDown() {
         playerPosition.y
       );
       levelFail();
+    } else if (giftCollision()) {
+      levelWin();
     }
   }
 
   renderGame();
+  drawLastPosition();
 }
 
 // EVENTS
@@ -277,3 +389,5 @@ window.addEventListener('resize', renderGame);
 window.addEventListener('load', renderGame);
 window.addEventListener('keyup', moveByKey);
 playGameBtn.addEventListener('click', playGame);
+btnPlayAgainWin.addEventListener('click', restartGame);
+btnPlayAgainOver.addEventListener('click', restartGame);

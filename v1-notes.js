@@ -237,7 +237,7 @@ function setScore() {
 
 function showLives() {
   // Array(lives) // [x, x, x]
-  const heartsArray = Array(lives).fill(emojis['HEART']);
+  // const heartsArray = Array(lives).fill(emojis['HEART']);
 
   // forma 1
   // spanLives.innerText = heartsArray.join('');
