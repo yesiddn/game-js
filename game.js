@@ -1,10 +1,12 @@
-const playGameBtn = document.querySelector('#play-game');
+const btnPlayGame = document.querySelector('#play-game');
 const canvas = document.querySelector('#game');
 const spanLives = document.querySelector('#lives');
 const spanTime = document.querySelector('#time');
 const spanScore = document.querySelector('#score');
 const pResult = document.querySelector('.result');
-const playAgain = document.querySelector('#play-again');
+const btnGoHomeWin = document.querySelector('.go-home-win');
+const btnGoHomeOver = document.querySelector('.go-home-over');
+const btnPlayAgain = document.querySelector('#play-again');
 const btnPlayAgainWin = document.querySelector('#play-again--win');
 const btnPlayAgainOver = document.querySelector('#play-again--over');
 
@@ -13,7 +15,6 @@ const btnArrowUp = document.querySelector('#up');
 const btnArrowDown = document.querySelector('#down');
 const btnArrowLeft = document.querySelector('#left');
 const btnArrowRight = document.querySelector('#right');
-
 
 // MODALS
 const modalStartGame = document.querySelector('#game--start');
@@ -70,6 +71,10 @@ function isModalOpen() {
 function changeModalState(modal) {
   modal.classList.toggle('inactive');
   modal.classList.toggle('active');
+}
+
+function goHome() {
+  location.reload();
 }
 
 function setTimeStart() {
@@ -401,8 +406,10 @@ function moveDown() {
 window.addEventListener('resize', renderGame);
 window.addEventListener('load', setCanvasSize);
 window.addEventListener('keyup', moveByKey);
-playGameBtn.addEventListener('click', playGame);
-playAgain.addEventListener('click', restartGame);
+btnPlayGame.addEventListener('click', playGame);
+btnGoHomeWin.addEventListener('click', goHome);
+btnGoHomeOver.addEventListener('click', goHome);
+btnPlayAgain.addEventListener('click', restartGame);
 btnPlayAgainWin.addEventListener('click', restartGame);
 btnPlayAgainOver.addEventListener('click', restartGame);
 btnArrowUp.addEventListener('click', moveUp);

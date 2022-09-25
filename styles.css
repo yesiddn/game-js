@@ -89,7 +89,14 @@ p {
 }
 
 /* Game ... */
-.game {
+.leaderboard {
+  display: none;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+}
+
+.game, .leaderboard {
   position: absolute;
   width: 80vw;
   height: 75vh;
@@ -110,7 +117,8 @@ p {
 }
 
 .game--start__message h1,
-.game__message h2 {
+.game__message h2,
+.leaderboard h2 {
   margin-bottom: 30px;
 }
 
@@ -118,8 +126,9 @@ p {
   margin-bottom: 20px;
 }
 
-.message__tip {
-  margin-top: 20px;
+.message__tip,
+.leaderboard__table {
+  margin: 20px auto;
   padding: 20px;
   border-radius: 20px;
   background-color: #8e36db;
@@ -134,8 +143,10 @@ p {
   font-size: 1.5rem;
 }
 
-#play-game {
+#play-game,
+.leaderboard--btn {
   width: 40%;
+  margin: 0 10px;
 }
 
 #play-game:hover {
@@ -154,7 +165,11 @@ p {
   cursor: pointer;
 }
 
-#play-game span, .play-again span {
+#play-game span,
+.play-again span,
+.leaderboard--btn span {
   display: block;
   margin-top: 10px;
 }
+
+/* Leaderboard ... */

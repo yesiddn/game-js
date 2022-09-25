@@ -156,7 +156,7 @@ btnArrowUp.addEventListener('click', moveUp);
 btnArrowLeft.addEventListener('click', moveLeft);
 btnArrowRight.addEventListener('click', moveRight);
 btnArrowDown.addEventListener('click', moveDown);
-playAgain.addEventListener('click', restartGame);
+btnPlayAgain.addEventListener('click', restartGame);
 playAgainWin.addEventListener('click', restartGame);
 playAgainOver.addEventListener('click', restartGame);
 
@@ -306,7 +306,7 @@ function moveLeft() {
   const isModalWinOpen = modalGameWin.classList.contains('active');
   const isModalOverOpen = modalGameOver.classList.contains('active');
   if (isModalStartOpen || isModalWinOpen || isModalOverOpen) return;
-  
+
   console.log('left');
   const futurePosition = fixNumber(playerPosition.x - elementSize);
 
@@ -335,7 +335,7 @@ function moveRight() {
   const isModalWinOpen = modalGameWin.classList.contains('active');
   const isModalOverOpen = modalGameOver.classList.contains('active');
   if (isModalStartOpen || isModalWinOpen || isModalOverOpen) return;
-  
+
   console.log('right');
   const futurePosition = fixNumber(playerPosition.x + elementSize);
   const limit = fixNumber(elementSize * 9);
@@ -365,7 +365,7 @@ function moveDown() {
   const isModalWinOpen = modalGameWin.classList.contains('active');
   const isModalOverOpen = modalGameOver.classList.contains('active');
   if (isModalStartOpen || isModalWinOpen || isModalOverOpen) return;
-  
+
   console.log('down');
   const futurePosition = fixNumber(playerPosition.y + elementSize);
   const limit = fixNumber(elementSize * 10);
@@ -418,7 +418,7 @@ function openModal(modal) {
   modal.classList.toggle('inactive');
 }
 
-function fillLastPosition() { 
+function fillLastPosition() {
   if (lastPosition.x != undefined) {
     game.fillText(emojis['BOMB_COLLISION'], lastPosition.x, lastPosition.y);
     setTimeout(() => {
