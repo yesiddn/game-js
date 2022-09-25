@@ -4,10 +4,16 @@ const spanLives = document.querySelector('#lives');
 const spanTime = document.querySelector('#time');
 const spanScore = document.querySelector('#score');
 const pResult = document.querySelector('.result');
+const playAgain = document.querySelector('#play-again');
 const btnPlayAgainWin = document.querySelector('#play-again--win');
 const btnPlayAgainOver = document.querySelector('#play-again--over');
 
-// BUTTONS
+// BUTTONS MOVEMENT
+const btnArrowUp = document.querySelector('#up');
+const btnArrowDown = document.querySelector('#down');
+const btnArrowLeft = document.querySelector('#left');
+const btnArrowRight = document.querySelector('#right');
+
 
 // MODALS
 const modalStartGame = document.querySelector('#game--start');
@@ -84,6 +90,7 @@ function restartGame() {
   playGame();
 }
 
+// MAIN FLOW
 function playGame() {
   const isModalStartGameOpen = modalStartGame.classList.contains('active');
   const isModalGameWinOpen = modalGameWin.classList.contains('active');
@@ -155,6 +162,11 @@ function drawCanvasContent() {
 }
 
 function drawPlayer() {
+  if (playerPosition.x != undefined) {
+    playerPosition.x = horizontalMovement * elementSize;
+    playerPosition.y = verticalMovement * elementSize;
+  }
+
   drawElement(emojis['PLAYER'], playerPosition.x, playerPosition.y);
 }
 
@@ -259,6 +271,7 @@ function moveByKey(event) {
   else if (event.key == 'ArrowLeft') moveLeft();
   else if (event.key == 'ArrowRight') moveRight();
   else if (event.key == 'ArrowDown') moveDown();
+  else if (event.code == 'Space') restartGame();
 }
 
 function moveUp() {
@@ -386,8 +399,13 @@ function moveDown() {
 
 // EVENTS
 window.addEventListener('resize', renderGame);
-window.addEventListener('load', renderGame);
+window.addEventListener('load', setCanvasSize);
 window.addEventListener('keyup', moveByKey);
 playGameBtn.addEventListener('click', playGame);
+playAgain.addEventListener('click', restartGame);
 btnPlayAgainWin.addEventListener('click', restartGame);
 btnPlayAgainOver.addEventListener('click', restartGame);
+btnArrowUp.addEventListener('click', moveUp);
+btnArrowLeft.addEventListener('click', moveLeft);
+btnArrowRight.addEventListener('click', moveRight);
+btnArrowDown.addEventListener('click', moveDown);

@@ -69,6 +69,7 @@ function setCanvasSize() {
   elementSize = fixNumber(elementSize);
 
   if (playerPosition.x != undefined) {
+    console.log('reiniciando');
     playerPosition.x = horizontalMovement * elementSize;
     playerPosition.y = verticalMovement * elementSize;
   }
