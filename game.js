@@ -4,11 +4,15 @@ const spanLives = document.querySelector('#lives');
 const spanTime = document.querySelector('#time');
 const spanScore = document.querySelector('#score');
 const pResult = document.querySelector('.result');
-const btnGoHomeWin = document.querySelector('.go-home-win');
-const btnGoHomeOver = document.querySelector('.go-home-over');
+
+// BUTTONS
+const btnGoHomeWin = document.querySelector('.go-home--win');
+const btnGoHomeOver = document.querySelector('.go-home--over');
+const btnGoHomeBoard = document.querySelector('.go-home--board');
 const btnPlayAgain = document.querySelector('#play-again');
 const btnPlayAgainWin = document.querySelector('#play-again--win');
 const btnPlayAgainOver = document.querySelector('#play-again--over');
+const btnLeaderboard = document.querySelector('.leaderboard--btn');
 
 // BUTTONS MOVEMENT
 const btnArrowUp = document.querySelector('#up');
@@ -20,6 +24,7 @@ const btnArrowRight = document.querySelector('#right');
 const modalStartGame = document.querySelector('#game--start');
 const modalGameWin = document.querySelector('#game--win');
 const modalGameOver = document.querySelector('#game--over');
+const modalLeaderboard = document.querySelector('.leaderboard');
 
 // VARIABLES
 const game = canvas.getContext('2d');
@@ -402,6 +407,11 @@ function moveDown() {
   drawLastPosition();
 }
 
+// LEADERBOARD
+function leaderboard() {
+  changeModalState(modalLeaderboard);
+}
+
 // EVENTS
 window.addEventListener('resize', renderGame);
 window.addEventListener('load', setCanvasSize);
@@ -409,6 +419,7 @@ window.addEventListener('keyup', moveByKey);
 btnPlayGame.addEventListener('click', playGame);
 btnGoHomeWin.addEventListener('click', goHome);
 btnGoHomeOver.addEventListener('click', goHome);
+btnGoHomeBoard.addEventListener('click', goHome);
 btnPlayAgain.addEventListener('click', restartGame);
 btnPlayAgainWin.addEventListener('click', restartGame);
 btnPlayAgainOver.addEventListener('click', restartGame);
@@ -416,3 +427,4 @@ btnArrowUp.addEventListener('click', moveUp);
 btnArrowLeft.addEventListener('click', moveLeft);
 btnArrowRight.addEventListener('click', moveRight);
 btnArrowDown.addEventListener('click', moveDown);
+btnLeaderboard.addEventListener('click', leaderboard);

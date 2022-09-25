@@ -89,13 +89,6 @@ p {
 }
 
 /* Game ... */
-.leaderboard {
-  display: none;
-  justify-content: center;
-  align-items: center;
-  flex-direction: column;
-}
-
 .game, .leaderboard {
   position: absolute;
   width: 80vw;
@@ -149,7 +142,7 @@ p {
   margin: 0 10px;
 }
 
-#play-game:hover {
+#play-game:hover, .leaderboard--btn:hover {
   background-color: #ff6600;
 }
 
@@ -173,3 +166,21 @@ p {
 }
 
 /* Leaderboard ... */
+.leaderboard {
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+}
+
+.leaderboard__table {
+  margin: 20px auto;
+  padding: 20px;
+  border-radius: 20px;
+  background-color: #8e36db;
+}
+
+.leaderboard__table__body {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
