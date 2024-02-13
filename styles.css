@@ -184,3 +184,11 @@ p {
   flex-direction: column;
   align-items: center;
 }
+
+/* media queries */
+@media (min-width: 768px) {
+  .btns {
+    display: none;
+  }
+  
+}
