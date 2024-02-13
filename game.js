@@ -229,8 +229,8 @@ function setScore() {
 // COLLISIONS
 function enemiesCollision() {
   const collision = enemiesPosition.find((enemy) => {
-    const collisionX = playerPosition.x == enemy.x;
-    const collisionY = playerPosition.y == enemy.y;
+    const collisionX = Math.round(playerPosition.x) == Math.round(enemy.x);
+    const collisionY = Math.round(playerPosition.y) == Math.round(enemy.y);
     return collisionX && collisionY;
   });
 
