@@ -238,8 +238,8 @@ function enemiesCollision() {
 }
 
 function giftCollision() {
-  const collisionX = playerPosition.x == giftPosition.x;
-  const collisionY = playerPosition.y == giftPosition.y;
+  const collisionX = Math.round(playerPosition.x) == Math.round(giftPosition.x);
+  const collisionY = Math.round(playerPosition.y) == Math.round(giftPosition.y);
   const collision = collisionX && collisionY;
 
   return collision;
