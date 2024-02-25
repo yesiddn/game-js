@@ -3,6 +3,14 @@
   margin: 0;
 }
 
+:root {
+  --primary-color: #F27457;
+  --primary-dark: #BF665E;
+  --secondary-color: #04BF9D;
+  --secondary-light: #03A696;
+  --bg-color: #253659;
+}
+
 body {
   padding: 0;
   background-color: indigo;
