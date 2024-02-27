@@ -5,6 +5,8 @@ const spanTime = document.querySelector('#time');
 const spanScore = document.querySelector('#score');
 const pResult = document.querySelector('.result');
 
+const gameContainer = document.querySelector('.game-container');
+
 // BUTTONS
 const btnGoHomeWin = document.querySelector('.go-home--win');
 const btnGoHomeOver = document.querySelector('.go-home--over');
@@ -105,6 +107,9 @@ function playGame() {
   const isModalStartGameOpen = modalStartGame.classList.contains('active');
   const isModalGameWinOpen = modalGameWin.classList.contains('active');
   const isModalGameOverOpen = modalGameOver.classList.contains('active');
+
+  gameContainer.classList.remove('inactive');
+  gameContainer.classList.add('active');
 
   if (isModalStartGameOpen) {
     changeModalState(modalStartGame);
@@ -254,6 +259,9 @@ function levelFail() {
   if (lives == 0) {
     clearInterval(timeInterval);
     changeModalState(modalGameOver);
+
+    gameContainer.classList.remove('active');
+    gameContainer.classList.add('inactive');
   } else {
     playerPosition.x = undefined;
     playerPosition.y = undefined;
@@ -273,6 +281,9 @@ function gameWin() {
   clearInterval(timeInterval);
   setScore();
   changeModalState(modalGameWin);
+
+  gameContainer.classList.remove('active');
+  gameContainer.classList.add('inactive');
 }
 
 // MOVE PLAYER
@@ -410,6 +421,7 @@ function moveDown() {
 // LEADERBOARD
 function leaderboard() {
   changeModalState(modalLeaderboard);
+  changeModalState(modalStartGame);
 }
 
 // EVENTS
