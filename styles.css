@@ -206,7 +206,9 @@ p {
   margin: 20px auto;
   padding: 20px;
   border-radius: 20px;
-  background-color: #8e36db;
+  border: 2px solid var(--primary-dark);
+  background-color: transparent;
+  color: #FFFFFF;
 }
 
 .leaderboard__table__body {
