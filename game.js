@@ -363,7 +363,7 @@ function moveRight() {
 
   console.log('right');
   const futurePosition = fixNumber(playerPosition.x + elementSize);
-  const limit = fixNumber(elementSize * 9);
+  const limit = fixNumber(elementSize * (maps[level].length - 1));
 
   if (futurePosition > limit) {
     console.log('OUT');
@@ -394,7 +394,7 @@ function moveDown() {
 
   console.log('down');
   const futurePosition = fixNumber(playerPosition.y + elementSize);
-  const limit = fixNumber(elementSize * 10);
+  const limit = fixNumber(elementSize * maps[level].length);
 
   if (futurePosition > limit) {
     console.log('OUT');
