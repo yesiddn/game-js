@@ -65,3 +65,78 @@ maps.push([
   '-XXXXXXXX-',
   '----------'
 ]);
+
+maps.push([
+  'XXXXXX--XX',
+  'X--------X',
+  'X-XXXXXX-X',
+  'X-X----X-X',
+  'X-X-XX-X-X',
+  'X-X-XO-X-X',
+  'X-X-XX-X-X',
+  'X---XX-X-X',
+  'XXXX--XX-X',
+  'X--------I',
+]);
+
+maps.push([
+  '----------',
+  '-XXXXXX-XX',
+  '-X------XX',
+  '-X-XX-XXXX',
+  '-X-XX-XXXX',
+  '-X-XX--I-X',
+  '-X-XXXXXXX',
+  '-X-------X',
+  '-XXXXXXXXX',
+  '---------O',
+]);
+
+maps.push([
+  'XXXXXX-XXX',
+  'X--------X',
+  'X-XX-XXXXX',
+  'X-XX-XXXXX',
+  'X-XX--XXXX',
+  'X-XX---OXX',
+  'X-X-XX-XXX',
+  'X-XX-XXXXX',
+  'X--------I',
+  'XXXXXXXXXX',
+]);
+
+maps.push([
+  '----------',
+  '-XXXXXX--X',
+  '-X-----X-X',
+  '-X-XXXXX-X',
+  '-X-XXX-X-X',
+  '-X-XXX-X-X',
+  '-X-IXX-X-X',
+  '-XXXXXXX-X',
+  '-X-XXX-X-O',
+  '-------IXX',
+]);
+
+maps.push([
+  'XXXXXXXXXXXXXXXXXXXX',
+  'X-------I----------X',
+  'X-XXXXXXXXXXXXXXXX-X',
+  'X-X--------------X-X',
+  'X-X-XXXXX--XXXXX-X-X',
+  'X-X-X----------X-X-X',
+  'X-X-X-XXXXXXXX-X-X-X',
+  'X-X-X-X------X-X-X-X',
+  'X-X-X-X--------X-X-X',
+  'X-X-X-XO-----X-X-X-X',
+  'X-X-X-XXXXXXXX-X-X-X',
+  'X-X-X----------X-X-X',
+  'X-X-XXXXXXXXXXXX-X-X',
+  'X-X--------------X-X',
+  'X-XXXXXXX-XXXXXXXX-X',
+  'X------------------X',
+  'XXXXXXXXXXXXXXXXXXXX',
+  'X------------------X',
+  'X------------------X',
+  'XXXXXXXXXXXXXXXXXXXX',
+]);
